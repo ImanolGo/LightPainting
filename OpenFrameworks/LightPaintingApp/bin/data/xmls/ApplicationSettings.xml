@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<settings>
+
+  <of_settings>
+
+      <window title="Light Painting App" x="0" y="0" width="1200" height="300" fullscreen="0" showCursor="1"/>
+
+      <debug showCursor="1" setVerbose="1" logToFile = "1"/>
+      <network ipAddress="192.168.0.21" portOscSend="7890" portOscReceive="5678" portUdpSend="2390" portUdpReceive="2391" syphon="PrimaveraSoundSyphon" numLeds = "100" />
+      <serial auto="0"  dmxPort="-1" serialPort="2"/>
+
+  </of_settings>
+
+  <textures>
+
+    <texture name="Equalizer" path="images/general/equalizer.png"/>
+    <texture name="Brush" path="images/general/brush.png"/>
+    <texture name="SurfaceImage" path="images/leds/abstract2.png"/>
+    <texture name="Circle" path="images/general/circle.png"/>
+    
+
+  </textures>
+
+  <colors>
+
+    <color name="BackgroundColor" r="40" g="40" b="43" a="255"/>
+    <color name="CenterBackgroundColor" r="85" g="78" b="68" a="255"/>
+    <color name="EdgeBackgroundColor" r="30" g="30" b="30" a="255"/>
+    <color  name="GUI_Background" r="0" g="0" b="0" a="127"/>
+    <color  name="GUI_Fill" r="160" g="160" b="160" a="160"/>
+    <color  name="GUI1" r="160" g="160" b="80" a="200"/>
+    <color  name="GUI2" r="80" g="160" b="160" a="200"/>
+    <color  name="LiveRectangle" r="56" g="234" b="57" a="108"/>
+    <color  name="FrameRectangle" r="90" g="95" b="103" a="255"/>
+
+
+  </colors>
+
+</settings>

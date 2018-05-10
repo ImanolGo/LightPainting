@@ -115,9 +115,6 @@ void GuiManager::setupTimeLineGui()
 {
     auto timeLineManager = &AppManager::getInstance().getTimeLineManager();
     
-    
-    ofParameter<float>      m_timeCurrent;
-    
     m_timeCurrent.set("Time", 0.0, 0.0, 1.0);
     m_timeCurrent.addListener(timeLineManager, &TimeLineManager::onTimeChange);
     m_parameters.add(m_timeCurrent);

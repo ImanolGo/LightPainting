@@ -46,6 +46,8 @@ void TimeLineManager::update()
 
 void TimeLineManager::updateTime()
 {
+    AppManager::getInstance().getGuiManager().onCurrentTimeChange(m_time);
+    
     if(m_playMode == Stop){
         return;
     }
@@ -67,18 +69,14 @@ void TimeLineManager::checkPlayback()
         return;
     }
     
-    if(m_time>=1.0){
+    if(m_time>1.0){
         m_playMode = Stop;
-        if(m_playDirection == PlayForward){
-            m_time = 0.0;
-        }
+        m_time = 1.0;
        
     }
-    else if(m_time<=0.0){
+    else if(m_time<0.0){
         m_playMode = Stop;
-        if(m_playDirection == PlayBackwards){
-            m_time = 1.0;
-        }
+         m_time = 0.0;
     }
 }
 
@@ -89,14 +87,22 @@ void TimeLineManager::onDurationChange(float& value)
 }
 
 
+void TimeLineManager::onTimeChange(float& value)
+{
+    m_time = value;
+    m_time = ofClamp(m_time, 0.0, 1.0);
+    //ofLogNotice() <<"TimeLineManager::onTimeChange << time = " << m_time;
+}
+
 void TimeLineManager::reset()
 {
     m_playMode = Stop;
     
+    ofLogNotice() <<"TimeLineManager::Reset";
     if(m_playDirection == PlayForward){
         m_time = 0.0;
     }
-    else if(m_playDirection == PlayForward){
+    else if(m_playDirection == PlayBackwards){
         m_time = 1.0;
     }
 }
@@ -105,20 +111,30 @@ void TimeLineManager::reset()
 void TimeLineManager::stop()
 {
     m_playMode = Stop;
+    ofLogNotice() <<"TimeLineManager::Stop" ;
 }
 
 void TimeLineManager::play()
 {
     m_playMode = Play;
+    ofLogNotice() <<"TimeLineManager::Play" ;
 }
 
 void TimeLineManager::playPause()
 {
     if(m_playMode == Stop){
         m_playMode = Play;
+        ofLogNotice() <<"TimeLineManager::Play" ;
+        if(m_time >= 1.0 && m_playDirection == PlayForward){
+            m_time = 0.0;
+        }
+        else if(m_time <= 0.0 && m_playDirection == PlayBackwards){
+            m_time = 1.0;
+        }
     }
     else if(m_playMode == Play){
         m_playMode = Stop;
+        ofLogNotice() <<"TimeLineManager::Stop" ;
     }
 }
 

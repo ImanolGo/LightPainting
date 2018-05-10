@@ -49,7 +49,7 @@ void ImageManager::setupRectangle()
     float height  = AppManager::getInstance().getSettingsManager().getAppHeight();
     
     float h = height;
-    float w = width/170;
+    float w = width/200;
     float x = 0;
     float y = h*0.5;
     
@@ -144,7 +144,9 @@ void ImageManager::addImages(string& name)
 
 void ImageManager::update()
 {
+    this->updateRectangle();
     this->updateFbo();
+    
     //this->updateColors();
 }
 

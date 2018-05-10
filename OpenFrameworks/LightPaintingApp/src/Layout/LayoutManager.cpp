@@ -105,8 +105,11 @@ void LayoutManager::resetWindowRects()
     int i = 0;
     for (auto& rect : m_windowRects)
     {
-        rect.second->height = frame_height/m_windowRects.size() - 2*MARGIN;
-        rect.second->width = rect.second->height * ratio;
+        rect.second->width = frame_width  - 4*MARGIN;
+        rect.second->height = rect.second->width/ratio;
+    
+//        rect.second->height = frame_height/m_windowRects.size() - 2*MARGIN;
+//        rect.second->width = rect.second->height * ratio;
         
         rect.second->x = AppManager::getInstance().getGuiManager().getWidth()  + 4*MARGIN;
         rect.second->y = i*rect.second->height + 2*i*MARGIN  + 2*MARGIN;;

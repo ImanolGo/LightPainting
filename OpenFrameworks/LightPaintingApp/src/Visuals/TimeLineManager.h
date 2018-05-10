@@ -39,7 +39,7 @@ public:
     
     float getCurrentTime() const {return m_time;}
     
-    void onTimeChange(float& value)  { m_time = value;}
+    void onTimeChange(float& value);
     
     void onDurationChange(float& value);
     

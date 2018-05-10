@@ -41,11 +41,11 @@
 #endif
 
 #define LED_PIN    4
-#define DATA_PIN    12
+#define DATA_PIN    32
 
 #define LED_TYPE    WS2812B
 #define COLOR_ORDER GRB
-#define NUM_LEDS 432
+#define NUM_LEDS 100
 #define MAX_BRIGHTNESS 255
 CRGBArray<NUM_LEDS> leds;
 
@@ -62,11 +62,11 @@ volatile byte currentcounter = 0; //counter for data reception
 byte previouscounter = 0; //counter for data reception 
 unsigned long now = 0; //current time value
 
-//char ssid[] = "TP-LINK_54E4"; //  your network SSID (name)
-//char pass[] = "27155332";    // your network password (use for WPA, or use as key for WEP)
+char ssid[] = "TP-LINK_54E4"; //  your network SSID (name)
+char pass[] = "27155332";    // your network password (use for WPA, or use as key for WEP)
 
-char ssid[] = "TP-Link_9528"; //  your network SSID (name)
-char pass[] = "15419699";    // your network password (use for WPA, or use as key for WEP)
+//char ssid[] = "TP-Link_9528"; //  your network SSID (name)
+//char pass[] = "15419699";    // your network password (use for WPA, or use as key for WEP)
 
 
 IPAddress ip(192, 168, 0, 21); //  Fixed IP
@@ -120,7 +120,7 @@ void setupWifi() {
 void setupLeds() {
   FastLED.addLeds<LED_TYPE,DATA_PIN,COLOR_ORDER>(leds, NUM_LEDS).setCorrection(UncorrectedColor);;
   FastLED.setDither( 0 );
-  FastLED.setBrightness(255); 
+  FastLED.setBrightness(MAX_BRIGHTNESS); 
    //FastLED.setMaxPowerInVoltsAndMilliamps (5, 2100);
   FastLED.clear();
   FastLED.show();
@@ -141,7 +141,7 @@ void loop()
       int count = checkProtocolHeaders(packetBuffer, packetSize);
       if (count) 
       {
-              parseRGBReceived(packetBuffer, count); //process data function
+          parseRGBReceived(packetBuffer, count); //process data function
       }
     }
 }

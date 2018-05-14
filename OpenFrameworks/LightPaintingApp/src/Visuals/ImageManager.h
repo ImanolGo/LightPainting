@@ -54,13 +54,19 @@ public:
     
     ofColor getColor(float percentage);
     
+    void setTopMargin(float & value) {m_topMargin = value;}
+    
+    void setBottomMargin(float & value) {m_bottomMargin = value;}
+    
+    const ofFbo& getFbo() const {return m_fbo;}
+    
 private:
     
     void setupFbo();
     
     void setupImages();
     
-    void setupRectangle();
+    void setupCursor();
     
     bool loadImages();
     
@@ -68,15 +74,17 @@ private:
     
     string getImageName(const string& path);
     
-    void setPixels();
+    void setFbo();
     
     void updateFbo();
     
-    void updateRectangle();
+    void updateCursor();
     
-    void updateColors();
+    void updatePixels();
     
     void drawFbo();
+    
+    void drawRectangles();
 
     
 private:
@@ -89,7 +97,8 @@ private:
     ofPixels                    m_pixels;
     float                       m_brightness;
     float                       m_rate;
-    
+    float                       m_topMargin;
+    float                       m_bottomMargin;
 };
 
 

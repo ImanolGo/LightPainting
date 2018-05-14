@@ -15,7 +15,7 @@
 #include "ofQTKitPlayer.h"
 
 
-ImageManager::ImageManager(): Manager(), m_brightness(1.0), m_rate(0.5)
+ImageManager::ImageManager(): Manager(), m_brightness(1.0), m_rate(0.5), m_topMargin(0.0), m_bottomMargin(0.0)
 {
     //Intentionally left empty
 }
@@ -36,14 +36,14 @@ void ImageManager::setup()
     Manager::setup();
     
     this->setupFbo();
-    this->setupRectangle();
+    this->setupCursor();
     this->setupImages();
     
     ofLogNotice() <<"ImageManager::initialized" ;
     
 }
 
-void ImageManager::setupRectangle()
+void ImageManager::setupCursor()
 {
     float width = AppManager::getInstance().getSettingsManager().getAppWidth();
     float height  = AppManager::getInstance().getSettingsManager().getAppHeight();
@@ -68,7 +68,7 @@ void ImageManager::setupFbo()
     float width = AppManager::getInstance().getSettingsManager().getAppWidth();
     float height  = AppManager::getInstance().getSettingsManager().getAppHeight();
     
-    m_fbo.allocate(width,height,GL_RGBA);
+    m_fbo.allocate(width,height,GL_RGB);
     m_fbo.begin(); ofClear(0); m_fbo.end();
 }
 
@@ -107,19 +107,24 @@ bool ImageManager::loadImages()
     
     
     m_currentImage = m_images.begin()->second;
-    this->setPixels();
+    //this->setFbo();
     
     return true;
     
 }
 
-void ImageManager::setPixels()
+void ImageManager::setFbo()
 {
-    m_pixels.clear();
-    auto& texture = m_currentImage->getTexture();
-    texture.readToPixels(m_pixels);
+//    m_pixels.clear();
+//    auto& texture = m_currentImage->getTexture();
+//    texture.readToPixels(m_pixels);
+//
+//    ofLogNotice() <<"ImageManager::setPixels -> w = " <<  m_pixels.getWidth() << ", h = " <<  m_pixels.getHeight();
     
-    ofLogNotice() <<"ImageManager::setPixels -> w = " <<  m_pixels.getWidth() << ", h = " <<  m_pixels.getHeight();
+    auto& texture = m_currentImage->getTexture();
+    
+    m_fbo.allocate(texture.getWidth(),texture.getHeight(),GL_RGB);
+    m_fbo.begin(); ofClear(0); m_fbo.end();
 }
 
 
@@ -140,18 +145,19 @@ void ImageManager::addImages(string& name)
        // texture.readToPixels(m_pixels);
     
 //    ofLogNotice() <<"ImageManager::setupImage -> w = " <<  m_pixels.getWidth() << ", h = " <<  m_pixels.getHeight();
+    
+    
 }
 
 void ImageManager::update()
 {
-    this->updateRectangle();
+    this->updateCursor();
     this->updateFbo();
-    
-    //this->updateColors();
+    this->updatePixels();
 }
 
 
-void ImageManager::updateRectangle()
+void ImageManager::updateCursor()
 {
     float width = AppManager::getInstance().getSettingsManager().getAppWidth();
     auto pos = m_cursor->getPosition();
@@ -163,26 +169,40 @@ void ImageManager::updateFbo()
 {
     m_fbo.begin();
         ofClear(0);
+        ofSetColor(m_brightness);
         m_currentImage->draw();
-        m_cursor->draw();
+        this->drawRectangles();
     m_fbo.end();
 }
 
-void ImageManager::updateColors()
+
+void ImageManager::drawRectangles()
 {
-    float width = AppManager::getInstance().getSettingsManager().getAppWidth();
-    auto pos = m_cursor->getPosition();
+    ofSetColor(0, 0, 0);
+    ofDrawRectangle(0,0, m_fbo.getWidth(), m_topMargin*m_fbo.getHeight());
+    ofDrawRectangle(0, m_fbo.getHeight(), m_fbo.getWidth(), -m_bottomMargin*m_fbo.getHeight());
+}
+
+void ImageManager::updatePixels()
+{
+    m_pixels.clear();
+    auto& texture = m_fbo.getTexture();
+    texture.readToPixels(m_pixels);
     
-   // float time = AppManager::getInstance().getTimeLineManager().getCurrentTime();
-    int x = (m_pixels.getWidth()-1) * pos.x/width;
     
-    for(int y=0; y<m_pixels.getHeight(); y++)
-    {
-        ofColor color = m_pixels.getColor(x,y);
-        color.setBrightness(color.getBrightness()*m_brightness);
-        //ofColor color = ofColor::white;
-        AppManager::getInstance().getLedsManager().setColor(y, color);
-    }
+//    float width = AppManager::getInstance().getSettingsManager().getAppWidth();
+//    auto pos = m_cursor->getPosition();
+//
+//   // float time = AppManager::getInstance().getTimeLineManager().getCurrentTime();
+//    int x = (m_pixels.getWidth()-1) * pos.x/width;
+//
+//    for(int y=0; y<m_pixels.getHeight(); y++)
+//    {
+//        ofColor color = m_pixels.getColor(x,y);
+//        color.setBrightness(color.getBrightness()*m_brightness);
+//        //ofColor color = ofColor::white;
+//        AppManager::getInstance().getLedsManager().setColor(y, color);
+//    }
     
 }
 
@@ -196,9 +216,7 @@ ofColor ImageManager::getColor(float percentage)
     int x = (m_pixels.getWidth()-1) * time;
     int y = (m_pixels.getHeight()-1) * percentage;
     
-    ofColor color = m_pixels.getColor(x,y);
-    color.setBrightness(color.getBrightness()*m_brightness);
-    return color;
+    return m_pixels.getColor(x,y);;
 }
 
 
@@ -206,13 +224,16 @@ ofColor ImageManager::getColor(float percentage)
 void ImageManager::draw()
 {
     this->drawFbo();
+    m_cursor->draw();
 }
 
 
 
 void ImageManager::drawFbo()
 {
-    m_fbo.draw(0,0);
+    float width = AppManager::getInstance().getSettingsManager().getAppWidth();
+    float height  = AppManager::getInstance().getSettingsManager().getAppHeight();
+    m_fbo.draw(0,0, width,height);
 }
 
 void ImageManager::onBrightnessChange(float& value)
@@ -236,7 +257,7 @@ void ImageManager::setImage(const string& name)
     }
     
     m_currentImage = m_images[name];
-    this->setPixels();
+   // this->setFbo();
 }
 
 

@@ -103,9 +103,20 @@ void GuiManager::setupImageGui()
     m_brightness.addListener(imageManager, &ImageManager::onBrightnessChange);
     m_parameters.add(m_brightness);
     
+    m_topMargin.set("Top", 1.0 , 0.0, 1.0);
+    m_topMargin.addListener(imageManager, &ImageManager::setTopMargin);
+    m_parameters.add(m_topMargin);
+    
+    m_bottomMargin.set("Bottom", 1.0 , 0.0, 1.0);
+    m_bottomMargin.addListener(imageManager, &ImageManager::setBottomMargin);
+    m_parameters.add(m_bottomMargin);
+    
+    
     // add a folder to group a few components together //
     ofxDatGuiFolder* folder = m_gui.addFolder("IMAGE", ofColor::purple);
     folder->addSlider(m_brightness);
+    folder->addSlider(m_topMargin);
+    folder->addSlider(m_bottomMargin);
     folder->expand();
     
     m_gui.addBreak();

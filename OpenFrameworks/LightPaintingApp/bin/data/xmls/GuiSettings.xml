@@ -1,6 +1,8 @@
 <?xml version="1.0"?>
 <group>
 	<Brightness>0.92</Brightness>
+	<Top>0</Top>
+	<Bottom>0</Bottom>
 	<Time>1</Time>
-	<Duration>5</Duration>
+	<Duration>12.13</Duration>
 </group>

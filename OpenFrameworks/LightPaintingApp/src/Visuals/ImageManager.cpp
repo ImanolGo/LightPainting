@@ -107,7 +107,7 @@ bool ImageManager::loadImages()
     
     
     m_currentImage = m_images.begin()->second;
-    //this->setFbo();
+    this->reload();
     
     return true;
     
@@ -135,9 +135,9 @@ void ImageManager::addImages(string& name)
     
     
     ofPtr<ImageVisual> image = ofPtr<ImageVisual> (new ImageVisual());
-    image->setResource(name);
-    image->setWidth(width);
-    image->setHeight(height);
+    image->setResource(name, true);
+    //image->setWidth(width);
+    //image->setHeight(height);
     
     m_images[name] = image;
     
@@ -152,8 +152,8 @@ void ImageManager::addImages(string& name)
 void ImageManager::update()
 {
     this->updateCursor();
-    this->updateFbo();
-    this->updatePixels();
+   // this->updateFbo();
+    //this->updatePixels();
 }
 
 
@@ -169,7 +169,6 @@ void ImageManager::updateFbo()
 {
     m_fbo.begin();
         ofClear(0);
-        //ofSetColor(m_brightness);
         m_currentImage->setColor(ofColor(m_brightness*255));
         m_currentImage->draw();
         this->drawRectangles();
@@ -189,21 +188,6 @@ void ImageManager::updatePixels()
     m_pixels.clear();
     auto& texture = m_fbo.getTexture();
     texture.readToPixels(m_pixels);
-    
-    
-//    float width = AppManager::getInstance().getSettingsManager().getAppWidth();
-//    auto pos = m_cursor->getPosition();
-//
-//   // float time = AppManager::getInstance().getTimeLineManager().getCurrentTime();
-//    int x = (m_pixels.getWidth()-1) * pos.x/width;
-//
-//    for(int y=0; y<m_pixels.getHeight(); y++)
-//    {
-//        ofColor color = m_pixels.getColor(x,y);
-//        color.setBrightness(color.getBrightness()*m_brightness);
-//        //ofColor color = ofColor::white;
-//        AppManager::getInstance().getLedsManager().setColor(y, color);
-//    }
     
 }
 
@@ -237,13 +221,6 @@ void ImageManager::drawFbo()
     m_fbo.draw(0,0, width,height);
 }
 
-void ImageManager::onBrightnessChange(float& value)
-{
-    //ofColor color(value);
-    //m_currentImage->setColor(color);
-    m_brightness = value;
-}
-
 string ImageManager::getImageName(const string& path)
 {
     std::vector<std::string> strs = ofSplitString(path, "/");
@@ -258,7 +235,35 @@ void ImageManager::setImage(const string& name)
     }
     
     m_currentImage = m_images[name];
-   // this->setFbo();
+    this->reload();
+}
+
+
+void ImageManager::setTopMargin(float & value)
+{
+    m_topMargin = value;
+    this->reload();
+}
+
+void ImageManager::setBottomMargin(float & value)
+{
+   m_bottomMargin = value;
+   this->reload();
+}
+
+void ImageManager::onBrightnessChange(float& value)
+{
+ 
+    m_brightness = value;
+    this->reload();
+    
+}
+
+void ImageManager::reload()
+{
+    this->setFbo();
+    this->updateFbo();
+    this->updatePixels();
 }
 
 

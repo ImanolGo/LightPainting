@@ -54,9 +54,9 @@ public:
     
     ofColor getColor(float percentage);
     
-    void setTopMargin(float & value) {m_topMargin = value;}
+    void setTopMargin(float & value);
     
-    void setBottomMargin(float & value) {m_bottomMargin = value;}
+    void setBottomMargin(float & value);
     
     const ofFbo& getFbo() const {return m_fbo;}
     
@@ -85,6 +85,8 @@ private:
     void drawFbo();
     
     void drawRectangles();
+    
+    void reload();
 
     
 private:

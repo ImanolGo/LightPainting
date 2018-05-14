@@ -31,15 +31,77 @@ void TimeLineManager::setup()
         return;
     
     Manager::setup();
+    this->setupText();
     
     ofLogNotice() <<"TimeLineManager::initialized" ;
     
 }
 
 
+void TimeLineManager::setupText()
+{
+    float width = AppManager::getInstance().getSettingsManager().getAppWidth();
+    float height  = AppManager::getInstance().getSettingsManager().getAppHeight();
+    float size = 98;
+    
+    float w = width;
+    float h = size;
+    float x =  width*0.5;
+    float y = height*0.5;
+    ofPoint pos = ofPoint(x, y);
+    string text = "00:00:000";
+    string fontName = "fonts/open-sans/OpenSans-Bold.ttf";
+    
+    m_text = TextVisual(pos,w,h,true);
+    m_text.setText(text, fontName, size);
+   // m_text.setColor(ofColor::white);
+    
+    
+    m_text2.load(fontName, size);
+}
+
+
 void TimeLineManager::update()
 {
     this->updateTime();
+    this->updateText();
+}
+
+void TimeLineManager::updateText()
+{
+    
+    float time = 0.0;
+    if(m_playDirection == PlayForward){
+         time = (1 - m_time)*m_duration;
+    }
+    else{
+         time = m_time*m_duration;
+    }
+    
+    //float time = (1 - m_time)*m_duration;
+    int minutes = time/60;
+    int seconds = time - 60*minutes;
+    int remain = (time - floor(time))*1000 ;
+    m_timeString = ofToString(minutes,2, '0') + ":" + ofToString(seconds,2, '0') + ":" + ofToString(remain,3, '0');
+}
+
+void TimeLineManager::draw()
+{
+    //ofEnableAlphaBlending();
+    this->drawText();
+    //ofClear(255,0,0);
+}
+
+void TimeLineManager::drawText()
+{
+    //m_text.draw();
+    
+    float width = AppManager::getInstance().getSettingsManager().getAppWidth();
+    float height  = AppManager::getInstance().getSettingsManager().getAppHeight();
+    
+    ofRectangle rect = m_text2.getStringBoundingBox("00:00:000", 0,0);
+    
+    m_text2.drawString(m_timeString, width*0.5 - rect.width*0.5, height*0.5 + rect.height*0.5);
 }
 
 

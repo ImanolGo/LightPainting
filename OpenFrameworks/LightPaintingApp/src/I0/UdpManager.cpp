@@ -67,9 +67,12 @@ void UdpManager::update()
 //    const int length = leds.size()*3;
 //    const char* pixels[length];
     
+    int ledsPerPixel = 3;
+    int numStrips = 2;
+    
     string message="";
     message+= m_header.f1; message+= m_header.f2; message+= m_header.f3;
-    m_header.size = 3*leds.size();
+    m_header.size = numStrips*ledsPerPixel*leds.size();
     unsigned char * s = (unsigned char*)& m_header.size;
     message+= s[1] ;  message+=  s[0];
     message+=m_header.channel;
@@ -81,22 +84,29 @@ void UdpManager::update()
         message+=leds[i]->getColor().b;
     }
     
-    m_udpConnection.Send(message.c_str(),message.length());
-    
-    message.clear();
-    message = "";
-    message+= m_header.f1; message+= m_header.f2; message+= m_header.f3;
-    message+= s[1] ;  message+=  s[0];
-    message+= (m_header.channel+1);
-
-    for(int i = 0; i< leds.size(); i++)
+    for(int i = leds.size()-1; i>=0; i--)
     {
         message+=leds[i]->getColor().r;
         message+=leds[i]->getColor().g;
         message+=leds[i]->getColor().b;
-
     }
-
-     m_udpConnection.Send(message.c_str(),message.length());
+    
+    m_udpConnection.Send(message.c_str(),message.length());
+    
+//    message.clear();
+//    message = "";
+//    message+= m_header.f1; message+= m_header.f2; message+= m_header.f3;
+//    message+= s[1] ;  message+=  s[0];
+//    message+= (m_header.channel+1);
+//
+//    for(int i = 0; i< leds.size(); i++)
+//    {
+//        message+=leds[i]->getColor().r;
+//        message+=leds[i]->getColor().g;
+//        message+=leds[i]->getColor().b;
+//
+//    }
+//
+//     m_udpConnection.Send(message.c_str(),message.length());
 
 }

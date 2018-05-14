@@ -45,8 +45,8 @@
 
 #define LED_TYPE    WS2812B
 #define COLOR_ORDER GRB
-#define NUM_LEDS 100
-#define MAX_BRIGHTNESS 255
+#define NUM_LEDS 144
+#define MAX_BRIGHTNESS 100
 CRGBArray<NUM_LEDS> leds;
 
 #define TEST_DELAY 600

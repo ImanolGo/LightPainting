@@ -11,6 +11,7 @@
 
 #include "ofMain.h"
 #include "Manager.h"
+#include "TextVisual.h"
 
 
 //========================== class TimeLineManager =======================================
@@ -37,6 +38,8 @@ public:
 
     void update();
     
+    void draw();
+    
     float getCurrentTime() const {return m_time;}
     
     void onTimeChange(float& value);
@@ -57,7 +60,13 @@ public:
     
 private:
     
+    void setupText();
+    
     void updateTime();
+    
+    void updateText();
+    
+    void drawText();
     
     void checkPlayback();
    
@@ -68,6 +77,9 @@ private:
     float                       m_time;
     PlaybackMode                m_playMode;
     PlaybackMode                m_playDirection;
+    TextVisual                  m_text;
+    ofTrueTypeFont              m_text2;
+    string                      m_timeString;
     
 };
 

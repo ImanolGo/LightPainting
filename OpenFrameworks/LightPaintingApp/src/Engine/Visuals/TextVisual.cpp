@@ -10,12 +10,12 @@
 
 TextVisual::TextVisual(ofVec3f pos, float width, float height, bool centred): BasicVisual(pos, width, height),m_fontSize(0), m_centred(centred), m_drawBB(false),m_lineHeight(1.0),m_alignment(OF_TEXT_ALIGN_LEFT)
 {
-     //Intentionally left empty
+    //Intentionally left empty
 }
 
 TextVisual::TextVisual(): BasicVisual(),m_fontSize(0), m_centred(false), m_drawBB(false), m_lineHeight(1.0),m_alignment(OF_TEXT_ALIGN_LEFT)
 {
-     //Intentionally left empty
+    //Intentionally left empty
 }
 
 TextVisual::~TextVisual()
@@ -35,10 +35,10 @@ void TextVisual::setText(const std::string& text, const std::string& fontName, f
 
 void TextVisual::setText(const std::string& text)
 {
-	if (m_text == text) {
-		return;
-	}
-
+    if (m_text == text) {
+        return;
+    }
+    
     m_text = text;
     
     m_textSuite.init(m_fontName,m_fontSize);
@@ -87,7 +87,7 @@ void TextVisual::setColor(const ofColor& color)
 
 void TextVisual::draw()
 {
-   
+    
     ofPushMatrix();
     ofPushStyle();
     
@@ -109,7 +109,7 @@ void TextVisual::draw()
             break;
             
     }
-
+    
     ofPopStyle();
     ofPopMatrix();   // recall the pushed style
 }

@@ -96,6 +96,8 @@ private:
     
     void updateLedsFbo();
     
+     void updateTimeLineFbo();
+    
 private:
 
 

@@ -42,12 +42,13 @@ void LayoutManager::setup()
 
 	Manager::setup();
     
+    
     this->setupFbos();
     this->setupWindowFrames();
     
     this->createTextVisuals();
     this->createImageVisuals();
-    //this->addVisuals();
+
     
     ofLogNotice() <<"LayoutManager::initialized";
 
@@ -70,6 +71,11 @@ void LayoutManager::setupFbos()
     fbo->allocate(width, height, GL_RGBA);
     fbo->begin(); ofClear(0);  fbo->end();
     m_fbos["Leds"] = fbo;
+    
+    fbo = ofPtr<ofFbo>(new ofFbo());
+    fbo->allocate(width, height, GL_RGBA);
+    fbo->begin(); ofClear(0);  fbo->end();
+    m_fbos["TimeLine"] = fbo;
     
 }
 
@@ -105,11 +111,13 @@ void LayoutManager::resetWindowRects()
     int i = 0;
     for (auto& rect : m_windowRects)
     {
-        rect.second->width = frame_width  - 4*MARGIN;
-        rect.second->height = rect.second->width/ratio;
-    
-//        rect.second->height = frame_height/m_windowRects.size() - 2*MARGIN;
-//        rect.second->width = rect.second->height * ratio;
+        rect.second->height = frame_height/m_windowRects.size() - 2*MARGIN;
+        rect.second->width = rect.second->height * ratio;
+        
+        if(rect.second->width > frame_width  - 4*MARGIN){
+            rect.second->width = frame_width  - 4*MARGIN;
+            rect.second->height = rect.second->width/ratio;
+        }
         
         rect.second->x = AppManager::getInstance().getGuiManager().getWidth()  + 4*MARGIN;
         rect.second->y = i*rect.second->height + 2*i*MARGIN  + 2*MARGIN;;
@@ -136,6 +144,7 @@ void LayoutManager::update()
 
     this->updateImageFbo();
     this->updateLedsFbo();
+    this->updateTimeLineFbo();
 }
 
 
@@ -159,6 +168,19 @@ void LayoutManager::updateLedsFbo()
     ofClear(0);
         AppManager::getInstance().getLedsManager().draw(width, height);
     this->end(name);
+}
+
+
+void LayoutManager::updateTimeLineFbo()
+{
+    ofEnableAlphaBlending();
+    
+    string name = "TimeLine";
+    this->begin(name);
+        ofClear(0);
+        AppManager::getInstance().getTimeLineManager().draw();
+    this->end(name);
+    ofDisableAlphaBlending();
 }
 
 

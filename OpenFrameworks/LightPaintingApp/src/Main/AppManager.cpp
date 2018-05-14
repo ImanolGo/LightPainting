@@ -57,6 +57,8 @@ void AppManager::setupOF()
     ofSetVerticalSync(true);
     ofSetEscapeQuitsApp(true);
     ofSetBackgroundAuto(true);
+    ofTrueTypeFont::setGlobalDpi(72);
+    
     //ofDisableSmoothing();
     //ofDisableAntiAliasing();
 }

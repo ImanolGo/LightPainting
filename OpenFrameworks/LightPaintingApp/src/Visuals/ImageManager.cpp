@@ -169,7 +169,8 @@ void ImageManager::updateFbo()
 {
     m_fbo.begin();
         ofClear(0);
-        ofSetColor(m_brightness);
+        //ofSetColor(m_brightness);
+        m_currentImage->setColor(ofColor(m_brightness*255));
         m_currentImage->draw();
         this->drawRectangles();
     m_fbo.end();

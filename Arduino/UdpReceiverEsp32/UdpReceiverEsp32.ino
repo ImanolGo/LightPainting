@@ -40,7 +40,6 @@
  #define DEBUG_PRINT_LN(x)
 #endif
 
-#define LED_PIN    4
 #define DATA_PIN    32
 
 #define LED_TYPE    WS2812B
@@ -124,6 +123,8 @@ void setupLeds() {
    //FastLED.setMaxPowerInVoltsAndMilliamps (5, 2100);
   FastLED.clear();
   FastLED.show();
+
+  pinMode(LED_BUILTIN, OUTPUT);
   
 }
 
@@ -172,7 +173,7 @@ void connectWifi() {
   while (WiFi.status() != WL_CONNECTED) 
   {
     // Blink LED while we're connecting:
-    digitalWrite(LED_PIN, ledState);
+    digitalWrite(LED_BUILTIN, ledState);
     ledState = (ledState + 1) % 2; // Flip ledState
     delay(500);
     DEBUG_PRINT(".");

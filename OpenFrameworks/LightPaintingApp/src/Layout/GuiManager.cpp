@@ -99,9 +99,18 @@ void GuiManager::setupImagesDropDown()
 void GuiManager::setupImageGui()
 {
     auto imageManager = &AppManager::getInstance().getImageManager();
-    m_brightness.set("Brightness", 1.0 , 0.0, 1.0);
-    m_brightness.addListener(imageManager, &ImageManager::onBrightnessChange);
+    m_brightness.set("Brightness", 1.0 , 0.0, 2.0);
+    //m_brightness.addListener(imageManager, &ImageManager::onBrightnessChange);
     m_parameters.add(m_brightness);
+    
+    m_saturation.set("Saturation", 1.0 , 0.0, 2.0);
+    //m_saturation.addListener(imageManager, &ImageManager::onSaturationChange);
+    m_parameters.add(m_saturation);
+    
+    m_contrast.set("Contrast", 1.0 , 0.0, 2.0);
+    //m_contrast.addListener(imageManager, &ImageManager::onContrastChange);
+    m_parameters.add(m_contrast);
+    
     
     m_topMargin.set("Top", 1.0 , 0.0, 1.0);
     m_topMargin.addListener(imageManager, &ImageManager::setTopMargin);
@@ -114,7 +123,10 @@ void GuiManager::setupImageGui()
     
     // add a folder to group a few components together //
     ofxDatGuiFolder* folder = m_gui.addFolder("IMAGE", ofColor::purple);
+    folder->addToggle("ColorCorrection", true);
     folder->addSlider(m_brightness);
+    folder->addSlider(m_saturation);
+    folder->addSlider(m_contrast);
     folder->addSlider(m_topMargin);
     folder->addSlider(m_bottomMargin);
     folder->expand();
@@ -248,6 +260,8 @@ void GuiManager::onButtonEvent(ofxDatGuiButtonEvent e)
     {
         this->saveGuiValues();
     }
+    
+    
 }
 
 
@@ -264,6 +278,11 @@ void GuiManager::onToggleEvent(ofxDatGuiToggleEvent e)
             AppManager::getInstance().getTimeLineManager().setPlayForward();
         }
         
+    }
+    
+    else if(e.target->getName() == "ColorCorrection")
+    {
+        AppManager::getInstance().getImageManager().onUseBrcosaChange(e.target->getChecked());
     }
 }
 

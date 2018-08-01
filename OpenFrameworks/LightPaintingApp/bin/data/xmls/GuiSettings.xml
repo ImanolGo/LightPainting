@@ -1,8 +1,10 @@
 <?xml version="1.0"?>
 <group>
-	<Brightness>0.61</Brightness>
+	<Brightness>1</Brightness>
+	<Saturation>1</Saturation>
+	<Contrast>1</Contrast>
 	<Top>0</Top>
-	<Bottom>0.24</Bottom>
-	<Time>0.755801</Time>
-	<Duration>12.13</Duration>
+	<Bottom>0</Bottom>
+	<Time>0</Time>
+	<Duration>10</Duration>
 </group>

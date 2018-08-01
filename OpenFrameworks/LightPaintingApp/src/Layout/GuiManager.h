@@ -96,6 +96,8 @@ private:
     ofParameterGroup        m_parameters;
     
     ofParameter<float>      m_brightness;
+    ofParameter<float>      m_saturation;
+    ofParameter<float>      m_contrast;
     ofParameter<float>      m_topMargin;
     ofParameter<float>      m_bottomMargin;
 

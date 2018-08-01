@@ -15,7 +15,7 @@
 #include "ofQTKitPlayer.h"
 
 
-ImageManager::ImageManager(): Manager(), m_brightness(1.0), m_rate(0.5), m_topMargin(0.0), m_bottomMargin(0.0)
+ImageManager::ImageManager(): Manager(), m_brightness(1.0), m_rate(0.5), m_topMargin(0.0), m_bottomMargin(0.0), m_contrast(1.0), m_saturation(1.0), m_useBrcosa(true)
 {
     //Intentionally left empty
 }
@@ -38,6 +38,7 @@ void ImageManager::setup()
     this->setupFbo();
     this->setupCursor();
     this->setupImages();
+    this->setupShader();
     
     ofLogNotice() <<"ImageManager::initialized" ;
     
@@ -55,6 +56,11 @@ void ImageManager::setupCursor()
     
     m_cursor = ofPtr<RectangleVisual>(new RectangleVisual(ofPoint(x,y), w, h, true));
 
+}
+
+void ImageManager::setupShader()
+{
+    m_brcosaShader.load("shaders/brcosa_GLSL");
 }
 
 void ImageManager::setupImages()
@@ -115,16 +121,13 @@ bool ImageManager::loadImages()
 
 void ImageManager::setFbo()
 {
-//    m_pixels.clear();
-//    auto& texture = m_currentImage->getTexture();
-//    texture.readToPixels(m_pixels);
-//
-//    ofLogNotice() <<"ImageManager::setPixels -> w = " <<  m_pixels.getWidth() << ", h = " <<  m_pixels.getHeight();
-    
+
     auto& texture = m_currentImage->getTexture();
     
     m_fbo.allocate(texture.getWidth(),texture.getHeight(),GL_RGB);
     m_fbo.begin(); ofClear(0); m_fbo.end();
+    
+    ofLogNotice() <<"ImageManager::setFbo -> w = " <<  m_fbo.getWidth() << ", h = " <<  m_fbo.getHeight();
 }
 
 
@@ -152,7 +155,7 @@ void ImageManager::addImages(string& name)
 void ImageManager::update()
 {
     this->updateCursor();
-   // this->updateFbo();
+    this->updateFbo();
     //this->updatePixels();
 }
 
@@ -169,12 +172,32 @@ void ImageManager::updateFbo()
 {
     m_fbo.begin();
         ofClear(0);
-        m_currentImage->setColor(ofColor(m_brightness*255));
-        m_currentImage->draw();
+        //m_currentImage->setColor(ofColor(m_brightness*255));
+        this->drawImage();
         this->drawRectangles();
     m_fbo.end();
 }
 
+
+void ImageManager::drawImage()
+{
+    if(m_useBrcosa){
+        m_brcosaShader.begin();
+        //m_brcosaShader.setUniformTexture("tex0", tex1, 0);
+        m_brcosaShader.setUniform3f("avgluma", 0.62,0.62,0.62);
+        m_brcosaShader.setUniform1f("contrast", m_contrast);
+        m_brcosaShader.setUniform1f("brightness", m_brightness);
+        m_brcosaShader.setUniform1f("saturation", m_saturation);
+        m_brcosaShader.setUniform1f("alpha", 1.0);
+    }
+   
+    m_currentImage->draw();
+   
+    if(m_useBrcosa){
+          m_brcosaShader.end();
+    }
+  
+}
 
 void ImageManager::drawRectangles()
 {
@@ -188,6 +211,8 @@ void ImageManager::updatePixels()
     m_pixels.clear();
     auto& texture = m_fbo.getTexture();
     texture.readToPixels(m_pixels);
+    
+    ofLogNotice() <<"ImageManager::updatePixels -> w = " <<  m_pixels.getWidth() << ", h = " <<  m_pixels.getHeight();
     
 }
 
@@ -256,7 +281,18 @@ void ImageManager::onBrightnessChange(float& value)
  
     m_brightness = value;
     this->reload();
-    
+}
+
+void ImageManager::onSaturationChange(float& value)
+{
+    m_saturation = value;
+    this->reload();
+}
+
+void ImageManager::onContrastChange(float& value)
+{
+    m_contrast = value;
+    this->reload();
 }
 
 void ImageManager::reload()

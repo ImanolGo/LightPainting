@@ -47,7 +47,13 @@ public:
     int getHeight() const {return m_currentImage->getOriginalHeight();}
     
     void onBrightnessChange(float& value);
-        
+    
+    void onSaturationChange(float& value);
+    
+    void onContrastChange(float& value);
+    
+    void onUseBrcosaChange(bool value)  { m_useBrcosa = value;}
+    
     const ImageMap& getImages() const {return m_images;}
     
     void setImage(const string& name);
@@ -66,6 +72,8 @@ private:
     
     void setupImages();
     
+    void setupShader();
+    
     void setupCursor();
     
     bool loadImages();
@@ -82,6 +90,8 @@ private:
     
     void updatePixels();
     
+    void drawImage();
+    
     void drawFbo();
     
     void drawRectangles();
@@ -97,10 +107,15 @@ private:
     ofPtr<ImageVisual>          m_currentImage;
     ofPtr<RectangleVisual>      m_cursor;
     ofPixels                    m_pixels;
+    ofShader                    m_brcosaShader;
     float                       m_brightness;
+    float                       m_contrast;
+    float                       m_saturation;
     float                       m_rate;
     float                       m_topMargin;
     float                       m_bottomMargin;
+    
+    bool                        m_useBrcosa;
 };
 
 

@@ -18,7 +18,7 @@
 const string LedsManager::LEDS_LIST_PATH = "leds/";
 
 
-LedsManager::LedsManager(): Manager(), m_ledsSize(2.0)
+LedsManager::LedsManager(): Manager(), m_ledsSize(2.0), m_mirrored(true)
 {
     //Intentionally left empty
 }
@@ -55,6 +55,8 @@ void LedsManager::setupLeds()
 
 void LedsManager::createLedsPosition()
 {
+    m_leds.clear();
+    
     auto numLeds = AppManager::getInstance().getSettingsManager().getNumLeds();
     float width = AppManager::getInstance().getSettingsManager().getAppWidth();
     float height  = AppManager::getInstance().getSettingsManager().getAppHeight();
@@ -180,10 +182,30 @@ void LedsManager::update()
 
 void LedsManager::updateLeds()
 {
-    for(int i = 0; i<m_leds.size(); i++){
-        float percentage = float(i)/m_leds.size();
-        auto color = AppManager::getInstance().getImageManager().getColor(percentage);
-        this->setColor(i, color);
+    if(m_mirrored)
+    {
+        for(int i = 0; i<m_leds.size()/2; i++){
+            float percentage = float(2*i)/m_leds.size();
+            auto color = AppManager::getInstance().getImageManager().getColor(percentage);
+            this->setColor(i, color);
+        }
+        
+        for(int i = 0; i<m_leds.size()/2; i++){
+            float n = m_leds.size()/2 - i - 1;
+            float percentage = float(2*n)/m_leds.size();
+            auto color = AppManager::getInstance().getImageManager().getColor(percentage);
+            int index = i + m_leds.size()/2;
+            this->setColor(index, color);
+        }
+        
+    }
+    
+    else{
+        for(int i = 0; i<m_leds.size(); i++){
+            float percentage = float(i)/m_leds.size();
+            auto color = AppManager::getInstance().getImageManager().getColor(percentage);
+            this->setColor(i, color);
+        }
     }
 }
 
@@ -242,6 +264,11 @@ void  LedsManager::setColor(int index, const ofColor& color)
     }
     
     m_leds[index]->setColor(color);
+}
+
+void LedsManager::setMirrored(bool value)
+{
+    m_mirrored = value;
 }
 
 

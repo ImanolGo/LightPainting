@@ -61,6 +61,8 @@ void ImageManager::setupCursor()
 void ImageManager::setupShader()
 {
     m_brcosaShader.load("shaders/brcosa_GLSL");
+    ofLogNotice() <<"ImageManager::setupShader" ;
+    
 }
 
 void ImageManager::setupImages()
@@ -181,7 +183,7 @@ void ImageManager::updateFbo()
 
 void ImageManager::drawImage()
 {
-    if(m_useBrcosa){
+   // if(m_useBrcosa){
         m_brcosaShader.begin();
         //m_brcosaShader.setUniformTexture("tex0", tex1, 0);
         m_brcosaShader.setUniform3f("avgluma", 0.62,0.62,0.62);
@@ -189,13 +191,13 @@ void ImageManager::drawImage()
         m_brcosaShader.setUniform1f("brightness", m_brightness);
         m_brcosaShader.setUniform1f("saturation", m_saturation);
         m_brcosaShader.setUniform1f("alpha", 1.0);
-    }
+   // }
    
     m_currentImage->draw();
    
-    if(m_useBrcosa){
+  //  if(m_useBrcosa){
           m_brcosaShader.end();
-    }
+   // }
   
 }
 

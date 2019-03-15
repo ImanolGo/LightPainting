@@ -68,9 +68,15 @@ public:
     
     void showChannels(bool _showChannels);
     
+    void setMirrored(bool value);
+    
+    bool getMirrored() const {return m_mirrored;}
+    
     void setColor(int index, const ofColor& color);
     
     void setPixels(const ofPixels& pixels, int brightness);
+    
+    
     
 private:
     
@@ -99,6 +105,7 @@ private:
     LedVector       m_leds;
     
     float           m_ledsSize;
+    bool            m_mirrored;
     
 };
 

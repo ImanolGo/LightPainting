@@ -73,6 +73,8 @@ void GuiManager::setupGuiParameters()
     m_gui.addFRM();
     m_gui.addButton("* Save GUI");
     
+    m_gui.addToggle("Mirrored", true);
+    
     m_gui.addBreak();
     
 }
@@ -100,17 +102,16 @@ void GuiManager::setupImageGui()
 {
     auto imageManager = &AppManager::getInstance().getImageManager();
     m_brightness.set("Brightness", 1.0 , 0.0, 2.0);
-    //m_brightness.addListener(imageManager, &ImageManager::onBrightnessChange);
+    m_brightness.addListener(imageManager, &ImageManager::onBrightnessChange);
     m_parameters.add(m_brightness);
     
     m_saturation.set("Saturation", 1.0 , 0.0, 2.0);
-    //m_saturation.addListener(imageManager, &ImageManager::onSaturationChange);
+    m_saturation.addListener(imageManager, &ImageManager::onSaturationChange);
     m_parameters.add(m_saturation);
     
     m_contrast.set("Contrast", 1.0 , 0.0, 2.0);
-    //m_contrast.addListener(imageManager, &ImageManager::onContrastChange);
+    m_contrast.addListener(imageManager, &ImageManager::onContrastChange);
     m_parameters.add(m_contrast);
-    
     
     m_topMargin.set("Top", 1.0 , 0.0, 1.0);
     m_topMargin.addListener(imageManager, &ImageManager::setTopMargin);
@@ -123,7 +124,7 @@ void GuiManager::setupImageGui()
     
     // add a folder to group a few components together //
     ofxDatGuiFolder* folder = m_gui.addFolder("IMAGE", ofColor::purple);
-    folder->addToggle("ColorCorrection", true);
+    //folder->addToggle("ColorCorrection", true);
     folder->addSlider(m_brightness);
     folder->addSlider(m_saturation);
     folder->addSlider(m_contrast);
@@ -283,6 +284,11 @@ void GuiManager::onToggleEvent(ofxDatGuiToggleEvent e)
     else if(e.target->getName() == "ColorCorrection")
     {
         AppManager::getInstance().getImageManager().onUseBrcosaChange(e.target->getChecked());
+    }
+    
+    else if(e.target->getName() == "Mirrored")
+    {
+        AppManager::getInstance().getLedsManager().setMirrored(e.target->getChecked());
     }
 }
 

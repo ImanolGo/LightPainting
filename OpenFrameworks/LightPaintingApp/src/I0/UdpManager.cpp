@@ -68,23 +68,16 @@ void UdpManager::update()
 //    const char* pixels[length];
     
     int ledsPerPixel = 3;
-    int numStrips = 2;
     
     string message="";
     message+= m_header.f1; message+= m_header.f2; message+= m_header.f3;
-    m_header.size = numStrips*ledsPerPixel*leds.size();
+    m_header.size = ledsPerPixel*leds.size();
     unsigned char * s = (unsigned char*)& m_header.size;
     message+= s[1] ;  message+=  s[0];
     message+=m_header.channel;
     
-    for(int i = 0; i< leds.size(); i++)
-    {
-        message+=leds[i]->getColor().r;
-        message+=leds[i]->getColor().g;
-        message+=leds[i]->getColor().b;
-    }
     
-    for(int i = leds.size()-1; i>=0; i--)
+    for(int i = 0; i< leds.size(); i++)
     {
         message+=leds[i]->getColor().r;
         message+=leds[i]->getColor().g;

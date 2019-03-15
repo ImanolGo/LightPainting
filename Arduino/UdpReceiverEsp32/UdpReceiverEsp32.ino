@@ -117,7 +117,7 @@ void setupWifi() {
 }
 
 void setupLeds() {
-  FastLED.addLeds<LED_TYPE,DATA_PIN,COLOR_ORDER>(leds, NUM_LEDS).setCorrection(UncorrectedColor);;
+  FastLED.addLeds<LED_TYPE,DATA_PIN,COLOR_ORDER>(leds, NUM_LEDS).setCorrection(UncorrectedColor);
   FastLED.setDither( 0 );
   FastLED.setBrightness(MAX_BRIGHTNESS); 
    //FastLED.setMaxPowerInVoltsAndMilliamps (5, 2100);
@@ -332,4 +332,3 @@ int BtoI(byte a, byte b)
 {
   return (a<<8)+b;
 }
-

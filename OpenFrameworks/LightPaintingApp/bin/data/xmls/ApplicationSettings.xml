@@ -6,7 +6,7 @@
       <window title="Light Painting App" x="0" y="0" width="1200" height="300" fullscreen="0" showCursor="1"/>
 
       <debug showCursor="1" setVerbose="1" logToFile = "1"/>
-      <network ipAddress="192.168.0.21" portOscSend="7890" portOscReceive="5678" portUdpSend="2390" portUdpReceive="2391" syphon="PrimaveraSoundSyphon" numLeds = "72" />
+      <network ipAddress="192.168.0.21" portOscSend="7890" portOscReceive="5678" portUdpSend="2390" portUdpReceive="2391" syphon="PrimaveraSoundSyphon" numLeds = "144" />
       <serial auto="0"  dmxPort="-1" serialPort="2"/>
 
   </of_settings>

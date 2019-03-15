@@ -91,8 +91,8 @@ private:
   
     float                   m_appWidth;             ///< stores the applications width
     float                   m_appHeight;            ///< stores the applications height
-    int                     m_portUdpSend;          ///< stores the OSC port used for the OSC Sending communications
-    int                     m_portUdpReceive;       ///< stores the OSC port used for the OSC Receiving communications
+    int                     m_portUdpSend;          ///< stores the UDP port used for the OSC Sending communications
+    int                     m_portUdpReceive;       ///< stores the UDP port used for the UDP Receiving communications
     int                     m_numLeds;              ///< determines the number of leds
     string                  m_ipAddress;            ///< stores the Ip Address used for the Network communications
 

@@ -97,6 +97,7 @@ private:
     
     ofParameter<bool>       m_mirrored;
     
+    ofParameter<float>      m_hue;
     ofParameter<float>      m_brightness;
     ofParameter<float>      m_saturation;
     ofParameter<float>      m_contrast;

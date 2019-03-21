@@ -46,6 +46,8 @@ public:
     
     int getHeight() const {return m_currentImage->getOriginalHeight();}
     
+    void onHueChange(float& value);
+    
     void onBrightnessChange(float& value);
     
     void onSaturationChange(float& value);
@@ -55,6 +57,8 @@ public:
     void onUseBrcosaChange(bool value)  { m_useBrcosa = value;}
     
     const ImageMap& getImages() const {return m_images;}
+    
+    const vector<string>& getImageNames() const {return m_imageNames;}
     
     void setImage(const string& name);
     
@@ -103,11 +107,14 @@ private:
     
     
     ofFbo                       m_fbo;
+    ofFbo                       m_fboImage;
     ImageMap                    m_images;
+    vector<string>              m_imageNames;
     ofPtr<ImageVisual>          m_currentImage;
     ofPtr<RectangleVisual>      m_cursor;
     ofPixels                    m_pixels;
     ofShader                    m_brcosaShader;
+    float                       m_hue;
     float                       m_brightness;
     float                       m_contrast;
     float                       m_saturation;

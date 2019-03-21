@@ -29,7 +29,7 @@ GuiManager::GuiManager(): Manager(), m_showGui(true)
 
 GuiManager::~GuiManager()
 {
-    this->saveGuiValues();
+    //this->saveGuiValues();
     ofLogNotice() <<"GuiManager::Destructor";
 }
 
@@ -84,9 +84,9 @@ void GuiManager::setupImagesDropDown()
 {
     string label = "IMAGES:";
     vector<string> opts;
-    auto images = AppManager::getInstance().getImageManager().getImages();
+    auto images = AppManager::getInstance().getImageManager().getImageNames();
     for(auto image: images){
-        opts.push_back(image.first);
+        opts.push_back(image);
     }
     
     m_gui.addDropdown(label, opts);
@@ -101,6 +101,11 @@ void GuiManager::setupImagesDropDown()
 void GuiManager::setupImageGui()
 {
     auto imageManager = &AppManager::getInstance().getImageManager();
+    
+    m_hue.set("Hue", 0.0 , 0.0, 7.0);
+    m_hue.addListener(imageManager, &ImageManager::onHueChange);
+    m_parameters.add(m_hue);
+    
     m_brightness.set("Brightness", 1.0 , 0.0, 2.0);
     m_brightness.addListener(imageManager, &ImageManager::onBrightnessChange);
     m_parameters.add(m_brightness);
@@ -125,6 +130,7 @@ void GuiManager::setupImageGui()
     // add a folder to group a few components together //
     ofxDatGuiFolder* folder = m_gui.addFolder("IMAGE", ofColor::purple);
     //folder->addToggle("ColorCorrection", true);
+    folder->addSlider(m_hue);
     folder->addSlider(m_brightness);
     folder->addSlider(m_saturation);
     folder->addSlider(m_contrast);

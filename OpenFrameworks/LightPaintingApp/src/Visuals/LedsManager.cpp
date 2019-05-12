@@ -18,7 +18,7 @@
 const string LedsManager::LEDS_LIST_PATH = "leds/";
 
 
-LedsManager::LedsManager(): Manager(), m_ledsSize(2.0), m_mirrored(true)
+LedsManager::LedsManager(): Manager(), m_ledsSize(2.0), m_mirrored(false)
 {
     //Intentionally left empty
 }

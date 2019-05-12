@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 <group>
-	<Hue>0</Hue>
-	<Brightness>0.93</Brightness>
-	<Saturation>1</Saturation>
-	<Contrast>1</Contrast>
+	<Hue>1.89</Hue>
+	<Brightness>1.46</Brightness>
+	<Saturation>3.57</Saturation>
+	<Contrast>1.26</Contrast>
 	<Top>0</Top>
 	<Bottom>0</Bottom>
-	<Time>0</Time>
-	<Duration>6</Duration>
+	<Time>1</Time>
+	<Duration>5</Duration>
 </group>

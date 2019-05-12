@@ -73,7 +73,7 @@ void GuiManager::setupGuiParameters()
     m_gui.addFRM();
     m_gui.addButton("* Save GUI");
     
-    m_gui.addToggle("Mirrored", true);
+    m_gui.addToggle("Mirrored", false);
     
     m_gui.addBreak();
     
@@ -106,15 +106,15 @@ void GuiManager::setupImageGui()
     m_hue.addListener(imageManager, &ImageManager::onHueChange);
     m_parameters.add(m_hue);
     
-    m_brightness.set("Brightness", 1.0 , 0.0, 2.0);
+    m_brightness.set("Brightness", 1.0 , 0.0, 5.0);
     m_brightness.addListener(imageManager, &ImageManager::onBrightnessChange);
     m_parameters.add(m_brightness);
     
-    m_saturation.set("Saturation", 1.0 , 0.0, 2.0);
+    m_saturation.set("Saturation", 1.0 , 0.0, 5.0);
     m_saturation.addListener(imageManager, &ImageManager::onSaturationChange);
     m_parameters.add(m_saturation);
     
-    m_contrast.set("Contrast", 1.0 , 0.0, 2.0);
+    m_contrast.set("Contrast", 1.0 , 0.0, 5.0);
     m_contrast.addListener(imageManager, &ImageManager::onContrastChange);
     m_parameters.add(m_contrast);
     

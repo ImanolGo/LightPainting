@@ -39,7 +39,7 @@ void UdpManager::setup()
     
     this->setupHeaders();
     this->setupIP();
-    //this->setupTimer();
+    this->setupTimer();
     this->sendAutodiscovery();
     this->setupUdpConnection();
     
@@ -92,6 +92,15 @@ void UdpManager::setupUdpConnection()
 void UdpManager::createConnection(string& ip, int send)
 {
     ofLogNotice() <<"UdpManager::createConnection -> sending to IP " << ip.c_str() <<" to port " << send;
+    int portReceive = AppManager::getInstance().getSettingsManager().getUdpPortReceive();
+    
+    m_udpConnection.Close();
+    
+    m_udpConnection.SetEnableBroadcast(false);
+    m_udpConnection.Create(); //create the socket
+    m_udpConnection.Bind(portReceive); //and bind to port
+    m_udpConnection.SetNonBlocking(true);
+    
     
     m_udpConnection.Connect(ip.c_str(),send);
     m_udpConnection.SetNonBlocking(true);
@@ -101,7 +110,7 @@ void UdpManager::createConnection(string& ip, int send)
 
 void UdpManager::setupTimer()
 {
-    m_timer.setup( 60000 );
+    m_timer.setup( 1000 );
     
     m_timer.start( false ) ;
     ofAddListener( m_timer.TIMER_COMPLETE , this, &UdpManager::timerCompleteHandler ) ;
@@ -145,7 +154,7 @@ void UdpManager::update()
 {
     this->updateReveivePackage();
     this->updatePixels();
-    // m_timer.update();
+    m_timer.update();
     
 }
 
@@ -249,15 +258,17 @@ void UdpManager::sendConnected()
 
 void UdpManager::sendAutodiscovery()
 {
-//    string message="";
-//
-//    message+= START_COMMAND;
-//    message+= AUTODISCOVERY_COMMAND;
-//    message+= END_COMMAND;
-//
-//    m_udpConnection.Send(message.c_str(),message.length());
-//
-//    ofLogNotice() <<"UdpManager::sendAutodiscovery << " << message;
+    string message="";
+    message+= m_connectHeader.f1; message+= m_connectHeader.f2; message+= m_connectHeader.f3;
+    unsigned char * s = (unsigned char*)& m_connectHeader.size;
+    message+= s[1] ;  message+=  s[0];
+    message+='a';
+    message+=m_connectHeader.channel;
+    message+='a';
+    
+    m_udpConnection.Send(message.c_str(),message.length());
+    
+    ofLogNotice() <<"UdpManager::sendConnected -> Send Autodiscovery ";
 }
 
 

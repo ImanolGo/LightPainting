@@ -85,14 +85,14 @@ WifiManager::WifiManager(LedsManager* ledsManager)
 {
     this->ledsManager=ledsManager;
     
-//    ssid = "TPH Operations";
-//    pass = "TheFUTURE!Sno3";
+//    ssid = "GL-AR300M-de9-NOR";
+//    pass = "goodlife";
 
-    ssid = "Don't worry, be happy!";
-    pass = "whyistheskysohigh?";
+//    ssid = "KabelBox-B8C0";
+//    pass = "25747187175241771897";
 
-//    ssid     =  "TP-LINK_54E4";
-//    pass = "27155332";
+    ssid     =  "TP-LINK_54E4";
+    pass = "27155332";
     
 
     wifiConnected = false;
@@ -249,6 +249,11 @@ void WifiManager::parseUdp()
 //               Udp.begin(LOCAL_PORT);
 //               Udp.flush();
             }
+
+            else if(packetBuffer[5] == 'a'){
+              Serial.print("WifiManager::parseUdp-> Send Autodiscovery ");
+               is_connected = false;
+            }
            
            
               
@@ -329,7 +334,7 @@ void WifiManager::WiFiEvent(WiFiEvent_t event){
           UdpReceive.begin(LOCAL_PORT);
           UdpDiscovery.begin(DISCOVERY_PORT);
           Serial.print("Listening to port: ");
-          Serial.println(WiFi.localIP(), LOCAL_PORT); 
+          Serial.println(LOCAL_PORT); 
           wifiConnected = true;
           ip = WiFi.localIP();  ip[3] = 255;
  

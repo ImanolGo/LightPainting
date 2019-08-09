@@ -40,7 +40,7 @@
  #define DEBUG_PRINT_LN(x)
 #endif
 
-#define DATA_PIN    5
+#define DATA_PIN    32
 
 #define LED_TYPE    WS2812B
 #define COLOR_ORDER GRB

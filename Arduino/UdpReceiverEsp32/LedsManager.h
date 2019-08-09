@@ -14,8 +14,8 @@
 
 #define LED_TYPE    WS2812B
 #define COLOR_ORDER GRB
-//#define DATA_PIN    32
-#define DATA_PIN    5
+#define DATA_PIN    32
+//#define DATA_PIN    5
 #define NUM_LEDS 144
 #define MAX_BRIGHTNESS 100
 #define TEST_DELAY 500
@@ -65,8 +65,8 @@ void LedsManager::setupLeds()
 
     FastLED.addLeds<LED_TYPE,DATA_PIN,COLOR_ORDER>(leds, NUM_LEDS).setCorrection(UncorrectedColor);
  
-   //FastLED.setMaxPowerInVoltsAndMilliamps (5, 2100);
-   //FastLED.setDither( 0 );
+   FastLED.setMaxPowerInVoltsAndMilliamps (5, 2100);
+   FastLED.setDither( 0 );
    FastLED.clear();  
    this->setAllColor(CRGB::Black); 
    Serial.println("LedsManager::setupLeds");
